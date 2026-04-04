@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'domain'    => env('AUTH0_DOMAIN'),
+    'domain' => env('AUTH0_DOMAIN'),
     'client_id' => env('AUTH0_CLIENT_ID'),
-    'audience'  => env('AUTH0_AUDIENCE'),
+    'audience' => env('AUTH0_AUDIENCE'),
 ];
