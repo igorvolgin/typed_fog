@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\InvalidTokenException;
+use Auth0\SDK\Token;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class Auth0Middleware
         }
 
         try {
-            $this->auth0->decode($token, tokenType: \Auth0\SDK\Token::TYPE_TOKEN);
+            $this->auth0->decode($token, tokenType: Token::TYPE_ACCESS_TOKEN);
         } catch (InvalidTokenException $e) {
             return response()->json(['message' => 'Unauthorized', 'reason' => $e->getMessage()], 401);
         }
