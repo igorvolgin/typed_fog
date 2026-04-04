@@ -18,7 +18,7 @@ const themes: { value: ThemeName; color: string; label: string }[] = [
 </script>
 
 <template>
-  <div class="flex items-center gap-3">
+  <div class="flex items-center justify-between gap-3">
     <!-- Color mode toggle -->
     <div class="flex items-center gap-0.5 p-1 rounded-lg bg-theme-card border border-theme-border">
       <button
