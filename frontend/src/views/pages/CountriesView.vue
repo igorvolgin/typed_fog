@@ -1,20 +1,30 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { RouterLink } from 'vue-router'
 import { useCountriesRepository } from '@/repositories/countriesRepository'
 import type { Country } from '@/repositories/countriesRepository'
 import { HttpError } from '@/services/http'
+import { useCountriesStore } from '@/stores/countries'
 import { UserIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import AppHeader from '@/components/AppHeader.vue'
 
 const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0()
 const countriesRepository = useCountriesRepository()
+const countriesStore = useCountriesStore()
 
 const countries = ref<Country[]>([])
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
 const fetched = ref(false)
+
+const sortedCountries = computed(() =>
+  [...countries.value].sort((a, b) =>
+    countriesStore.sortOrder === 'asc'
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name),
+  ),
+)
 
 async function fetchCountries() {
   loading.value = true
@@ -102,9 +112,19 @@ watch(
       </template>
 
       <template v-else>
+        <div class="flex justify-end mb-4">
+          <button
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-theme-card hover:bg-theme-hover border border-theme-border transition-colors text-theme-text"
+            @click="countriesStore.toggleSortOrder()"
+          >
+            Name
+            <ChevronUpIcon v-if="countriesStore.sortOrder === 'asc'" class="w-4 h-4" />
+            <ChevronDownIcon v-else class="w-4 h-4" />
+          </button>
+        </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           <RouterLink
-            v-for="country in countries"
+            v-for="country in sortedCountries"
             :key="country.code"
             :to="`/countries/${country.code}`"
             class="flex flex-col items-center gap-3 p-4 rounded-xl bg-theme-card hover:bg-theme-hover transition-colors cursor-pointer"
