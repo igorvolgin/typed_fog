@@ -33,7 +33,7 @@ class RestCountriesRepository implements CountryRepositoryInterface
                 ->retry(3, 500, function (Throwable $exception) {
                     return $exception instanceof RequestException
                         && ($exception->response->status() === 429 || $exception->response->serverError());
-                })
+                }, throw: false)
                 ->get(
                     self::BASE_URL.$path,
                     ['fields' => self::FIELDS]
