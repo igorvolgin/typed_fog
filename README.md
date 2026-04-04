@@ -29,7 +29,14 @@ Edit `frontend/.env.local` — fill in Auth0 credentials:
 |-----------------------|------------------------------------|
 | `VITE_AUTH0_DOMAIN`   | e.g. `your-tenant.auth0.com`       |
 | `VITE_AUTH0_CLIENT_ID`| Auth0 SPA application Client ID    |
+| `VITE_AUTH0_AUDIENCE` | Auth0 API audience identifier      |
 | `VITE_BACKEND_API_URL`| Backend URL, default `http://localhost:8000` |
+
+Edit `backend/.env` — set `FRONTEND_URL` to allowed CORS origins (comma-separated):
+
+```
+FRONTEND_URL=http://localhost:5173,http://localhost
+```
 
 ### 2. Generate APP_KEY
 
@@ -53,20 +60,7 @@ docker compose --profile prod up --build
 - Frontend prod: http://localhost
 - Backend: http://localhost:8000
 
-> **After adding new npm packages** the `node_modules` volume needs to be rebuilt:
-> ```bash
-> docker compose --profile dev down -v && docker compose --profile dev up --build
-> ```
-
-### 4. Copy vendor to host (dev only, first time)
-
-To get IDE autocompletion and source browsing locally:
-
-```bash
-docker compose --profile dev cp backend-dev:/var/www/backend/vendor ./backend/vendor
-```
-
-Only needed once after the first `--build`, or when `composer.json` changes.
+Dependencies (`node_modules` and `vendor`) are installed automatically on first container start via entrypoint scripts. They live in the bind mount, so your IDE picks them up without extra steps. They are reinstalled when `package.json` or `composer.json` changes.
 
 ## Useful commands
 
