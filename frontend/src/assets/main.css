@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* ── Indigo theme (default) ────────────────────────────────────────────── */
+:root,
+[data-theme="indigo"] {
+  --color-accent: #6366f1;
+  --color-accent-hover: #4f46e5;
+}
+
+/* ── Rose theme ────────────────────────────────────────────────────────── */
+[data-theme="rose"] {
+  --color-accent: #f43f5e;
+  --color-accent-hover: #e11d48;
+}
+
+/* ── Dark mode (default) ───────────────────────────────────────────────── */
+:root,
+.dark {
+  --color-bg: #030712;
+  --color-bg-card: #111827;
+  --color-bg-hover: #1f2937;
+  --color-border: #1f2937;
+  --color-text: #ffffff;
+  --color-text-muted: #9ca3af;
+}
+
+.dark[data-theme="rose"] {
+  --color-bg: #0e0608;
+  --color-bg-card: #1a0a0e;
+  --color-bg-hover: #2a1018;
+  --color-border: #2a1018;
+}
+
+/* ── Light mode ────────────────────────────────────────────────────────── */
+.light {
+  --color-bg: #f9fafb;
+  --color-bg-card: #ffffff;
+  --color-bg-hover: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+}
+
+.light[data-theme="rose"] {
+  --color-bg: #fff5f7;
+  --color-bg-card: #ffffff;
+  --color-bg-hover: #ffe4ea;
+  --color-border: #fecdd6;
+}
+
+/* ── Semantic tokens for Tailwind ──────────────────────────────────────── */
+@theme inline {
+  --color-theme-bg: var(--color-bg);
+  --color-theme-card: var(--color-bg-card);
+  --color-theme-hover: var(--color-bg-hover);
+  --color-theme-border: var(--color-border);
+  --color-theme-text: var(--color-text);
+  --color-theme-muted: var(--color-text-muted);
+  --color-theme-accent: var(--color-accent);
+  --color-theme-accent-hover: var(--color-accent-hover);
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+html {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.2s, color 0.2s;
+}
