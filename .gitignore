@@ -1,0 +1,10 @@
+# IDE
+.idea/
+.vscode/
+.fleet/
+.nova/
+.zed/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,76 @@
+services:
+  backend-dev:
+    profiles: [dev]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8000:8000"
+    environment:
+      REDIS_HOST: redis
+    volumes:
+      - ./backend:/var/www/backend
+      - backend_vendor:/var/www/backend/vendor
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app
+
+  frontend-dev:
+    profiles: [dev]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend-prod:
+    profiles: [prod]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: prod
+    ports:
+      - "8000:8000"
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app
+
+  frontend-prod:
+    profiles: [prod]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: prod
+    ports:
+      - "80:80"
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - app
+
+volumes:
+  redis_data:
+  backend_vendor:
+
+networks:
+  app:
+    driver: bridge
