@@ -13,6 +13,10 @@ const router = createRouter({
       component: () => import('@/views/pages/CountriesView.vue'),
     },
     {
+      path: '/countries/:code',
+      component: () => import('@/views/pages/CountryDetailView.vue'),
+    },
+    {
       path: '/health',
       component: () => import('@/views/pages/HealthView.vue'),
     },

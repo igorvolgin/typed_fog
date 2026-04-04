@@ -32,6 +32,7 @@ class CountryDtoTest extends TestCase
         $this->assertSame('Ukraine', $dto->name);
         $this->assertSame('https://flagcdn.com/w320/ua.png', $dto->flagPng);
         $this->assertSame('https://flagcdn.com/ua.svg', $dto->flagSvg);
+        $this->assertSame('', $dto->flagAlt);
     }
 
     #[Test]
@@ -52,6 +53,7 @@ class CountryDtoTest extends TestCase
         $this->assertSame('Antarctica', $dto->name);
         $this->assertSame('', $dto->flagPng);
         $this->assertSame('', $dto->flagSvg);
+        $this->assertSame('', $dto->flagAlt);
     }
 
     #[Test]
@@ -65,6 +67,7 @@ class CountryDtoTest extends TestCase
             name: 'Germany',
             flagPng: 'https://flagcdn.com/w320/de.png',
             flagSvg: 'https://flagcdn.com/de.svg',
+            flagAlt: 'The flag of Germany',
         );
 
         $restored = CountryDto::fromArray($dto->toArray());

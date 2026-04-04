@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Country;
 
+use App\DTOs\CountryDetailDto;
 use App\DTOs\CountryDto;
 use App\Repositories\Contracts\CountryRepositoryInterface;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
@@ -35,6 +36,19 @@ class CachedCountryRepository implements CountryRepositoryInterface
             fn (array $item) => CountryDto::fromArray($item),
             $raw,
         );
+    }
+
+    public function findByCode(string $code): ?CountryDetailDto
+    {
+        $code = strtoupper($code);
+
+        $raw = $this->cache->flexible(
+            $this->cacheKey('detail', $code),
+            [self::FRESH_TTL, self::STALE_TTL],
+            fn () => $this->inner->findByCode($code)?->toArray(),
+        );
+
+        return $raw ? CountryDetailDto::fromArray($raw) : null;
     }
 
     private function cacheKey(string $method, string ...$params): string

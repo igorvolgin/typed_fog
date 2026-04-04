@@ -17,7 +17,8 @@ class CountryResource extends JsonResource
             'name' => $this->name,
             'flag' => [
                 'png' => $this->flagPng,
-                'svg' => $this->flagSvg
+                'svg' => $this->flagSvg,
+                'alt' => $this->flagAlt,
             ]
         ];
     }

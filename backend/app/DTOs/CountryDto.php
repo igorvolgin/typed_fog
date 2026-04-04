@@ -12,6 +12,7 @@ readonly class CountryDto
         public string $name,
         public string $flagPng,
         public string $flagSvg,
+        public string $flagAlt,
     ) {}
 
     public static function fromRestCountriesV31(array $data): self
@@ -24,6 +25,7 @@ readonly class CountryDto
             name: $data['name']['common'],
             flagPng: $data['flags']['png'] ?? '',
             flagSvg: $data['flags']['svg'] ?? '',
+            flagAlt: $data['flags']['alt'] ?? '',
         );
     }
 
@@ -37,6 +39,7 @@ readonly class CountryDto
             name: $data['name'],
             flagPng: $data['flagPng'],
             flagSvg: $data['flagSvg'],
+            flagAlt: $data['flagAlt'],
         );
     }
 
@@ -50,6 +53,7 @@ readonly class CountryDto
             'name' => $this->name,
             'flagPng' => $this->flagPng,
             'flagSvg' => $this->flagSvg,
+            'flagAlt' => $this->flagAlt,
         ];
     }
 }

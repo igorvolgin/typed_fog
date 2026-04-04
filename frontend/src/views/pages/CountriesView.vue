@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import { countriesRepository } from '@/repositories/countriesRepository'
+import { RouterLink } from 'vue-router'
+import { useCountriesRepository } from '@/repositories/countriesRepository'
 import type { Country } from '@/repositories/countriesRepository'
 import { HttpError } from '@/services/http'
 import AppHeader from '@/components/AppHeader.vue'
 
 const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0()
+const countriesRepository = useCountriesRepository()
 
 const countries = ref<Country[]>([])
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
+const fetched = ref(false)
 
 async function fetchCountries() {
   loading.value = true
   errorMessage.value = null
   try {
     countries.value = await countriesRepository.list()
+    fetched.value = true
   } catch (err) {
     if (err instanceof HttpError) {
       if (err.status === 401 || err.status === 403) {
@@ -36,11 +40,15 @@ async function fetchCountries() {
   }
 }
 
-watchEffect(() => {
-  if (!isLoading.value && isAuthenticated.value && countries.value.length === 0) {
-    fetchCountries()
-  }
-})
+watch(
+  [isLoading, isAuthenticated],
+  ([loading, authenticated]) => {
+    if (!loading && authenticated && !fetched.value) {
+      fetchCountries()
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -96,18 +104,19 @@ watchEffect(() => {
 
       <template v-else>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          <div
+          <RouterLink
             v-for="country in countries"
             :key="country.code"
-            class="flex flex-col items-center gap-3 p-4 rounded-xl bg-theme-card hover:bg-theme-hover transition-colors"
+            :to="`/countries/${country.code}`"
+            class="flex flex-col items-center gap-3 p-4 rounded-xl bg-theme-card hover:bg-theme-hover transition-colors cursor-pointer"
           >
             <img
-              :src="`https://flagcdn.com/w80/${country.code.toLowerCase()}.png`"
-              :alt="country.name"
+              :src="country.flag.svg || country.flag.png"
+              :alt="country.flag.alt || country.name"
               class="w-16 h-auto rounded shadow"
             />
             <span class="text-sm text-theme-text text-center">{{ country.name }}</span>
-          </div>
+          </RouterLink>
         </div>
       </template>
 

@@ -4,6 +4,30 @@ import { HttpError } from '@/services/http'
 export interface Country {
   code: string
   name: string
+  flag: {
+    png: string
+    svg: string
+    alt: string
+  }
+}
+
+export interface CountryDetail {
+  code: string
+  name: string
+  officialName: string
+  flag: {
+    png: string
+    svg: string
+    alt: string
+  }
+  region: string
+  subregion: string
+  population: number
+  capital: string[]
+  timezones: string[]
+  borders: string[]
+  languages: string[]
+  currencies: Record<string, { name: string; symbol: string }>
 }
 
 const MAX_RETRIES = 3
@@ -25,6 +49,12 @@ async function withRetry<T>(fn: () => Promise<T>): Promise<T> {
   }
 }
 
-export const countriesRepository = {
-  list: () => withRetry(() => useAuthHttp()<Country[]>('/api/countries')),
+export function useCountriesRepository() {
+  const authHttp = useAuthHttp()
+
+  return {
+    list: () => withRetry(() => authHttp<Country[]>('/api/countries')),
+    get: (code: string) =>
+      withRetry(() => authHttp<CountryDetail>(`/api/countries/${encodeURIComponent(code)}`)),
+  }
 }
