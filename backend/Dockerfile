@@ -15,16 +15,18 @@ EXPOSE 8000
 
 FROM base AS dev
 
-COPY composer.json composer.lock ./
-RUN composer install --no-scripts
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 
 
 FROM base AS prod
 
 COPY . .
-RUN composer install \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN composer install --no-dev --optimize-autoloader \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && php artisan optimize
 
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

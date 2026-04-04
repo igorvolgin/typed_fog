@@ -12,17 +12,25 @@ const pinia = createPinia()
 
 app.use(pinia)
 app.use(router)
-app.use(
-  createAuth0({
-    domain: import.meta.env.VITE_AUTH0_DOMAIN,
-    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
-    authorizationParams: {
-      redirect_uri: `${window.location.origin}/callback`,
-      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-    },
-    cacheLocation: 'localstorage',
-  }),
-)
+
+const domain = import.meta.env.VITE_AUTH0_DOMAIN
+const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
+
+if (domain && clientId) {
+  app.use(
+    createAuth0({
+      domain,
+      clientId,
+      authorizationParams: {
+        redirect_uri: `${window.location.origin}/callback`,
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      },
+      cacheLocation: 'localstorage',
+      useRefreshTokens: true,
+      useRefreshTokensFallback: false,
+    }),
+  )
+}
 
 useThemeStore().init()
 

@@ -68,7 +68,14 @@ watch(
 
     <main class="px-6 py-10 max-w-6xl mx-auto">
 
-      <template v-if="!isLoading && !isAuthenticated">
+      <template v-if="isLoading">
+        <div class="flex flex-col items-center gap-4 py-24 text-center">
+          <div class="w-10 h-10 border-4 border-theme-border border-t-theme-accent rounded-full animate-spin" />
+          <p class="text-theme-muted text-sm">Loading…</p>
+        </div>
+      </template>
+
+      <template v-else-if="!isAuthenticated">
         <div class="flex flex-col items-center gap-6 py-24 text-center">
           <div class="w-16 h-16 rounded-full flex items-center justify-center" :style="{ backgroundColor: 'color-mix(in srgb, var(--color-accent) 15%, transparent)' }">
             <UserIcon class="w-8 h-8 text-theme-accent" />
