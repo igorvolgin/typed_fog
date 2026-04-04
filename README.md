@@ -20,7 +20,16 @@ Redis is not exposed outside the Docker network.
 ```bash
 cp .env.example .env
 cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
 ```
+
+Edit `frontend/.env.local` — fill in Auth0 credentials:
+
+| Variable              | Description                        |
+|-----------------------|------------------------------------|
+| `VITE_AUTH0_DOMAIN`   | e.g. `your-tenant.auth0.com`       |
+| `VITE_AUTH0_CLIENT_ID`| Auth0 SPA application Client ID    |
+| `VITE_BACKEND_API_URL`| Backend URL, default `http://localhost:8000` |
 
 ### 2. Generate APP_KEY
 
@@ -43,6 +52,11 @@ docker compose --profile prod up --build
 - Frontend dev: http://localhost:5173
 - Frontend prod: http://localhost
 - Backend: http://localhost:8000
+
+> **After adding new npm packages** the `node_modules` volume needs to be rebuilt:
+> ```bash
+> docker compose --profile dev down -v && docker compose --profile dev up --build
+> ```
 
 ### 4. Copy vendor to host (dev only, first time)
 
