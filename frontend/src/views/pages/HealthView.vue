@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { healthRepository } from '@/repositories/healthRepository'
+import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import AppHeader from '@/components/AppHeader.vue'
 
 const status = ref<'loading' | 'ok' | 'error'>('loading')
@@ -40,9 +41,7 @@ onMounted(async () => {
 
         <div v-else-if="status === 'ok'" class="flex flex-col items-center gap-6">
           <div class="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center">
-            <svg class="w-10 h-10 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
+            <CheckIcon class="w-10 h-10 text-emerald-400" />
           </div>
           <div>
             <h1 class="text-2xl font-semibold text-theme-text mb-2">Backend is operational</h1>
@@ -56,9 +55,7 @@ onMounted(async () => {
 
         <div v-else class="flex flex-col items-center gap-6">
           <div class="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center">
-            <svg class="w-10 h-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <XMarkIcon class="w-10 h-10 text-red-400" />
           </div>
           <div>
             <h1 class="text-2xl font-semibold text-theme-text mb-2">Backend unreachable</h1>

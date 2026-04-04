@@ -5,6 +5,7 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { useCountriesRepository } from '@/repositories/countriesRepository'
 import type { CountryDetail } from '@/repositories/countriesRepository'
 import { HttpError } from '@/services/http'
+import { ChevronLeftIcon } from '@heroicons/vue/24/outline'
 import AppHeader from '@/components/AppHeader.vue'
 
 const route = useRoute()
@@ -67,9 +68,7 @@ watch(
         to="/countries"
         class="inline-flex items-center gap-1.5 text-sm text-theme-muted hover:text-theme-text transition-colors mb-6"
       >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
+        <ChevronLeftIcon class="w-4 h-4" />
         Back to countries
       </RouterLink>
 
