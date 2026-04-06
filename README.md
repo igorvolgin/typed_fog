@@ -18,13 +18,11 @@ Redis is not exposed outside the Docker network.
 ### 1. Copy env files
 
 ```bash
-cp .env.example .env
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env.local
-# Fill in Auth0 credentials from the provided email
 ```
 
-Edit `frontend/.env.local` — fill in Auth0 credentials:
+Auth0 credentials and CORS origins are pre-configured in `.env.example` files. Auth0 is set up for frontend ports 5173 (dev) and 80 (prod). If another port is needed, feel free to contact me or create your own Auth0 keys.
 
 | Variable              | Description                        |
 |-----------------------|------------------------------------|
