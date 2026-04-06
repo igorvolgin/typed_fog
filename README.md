@@ -21,6 +21,7 @@ Redis is not exposed outside the Docker network.
 cp .env.example .env
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env.local
+# Fill in Auth0 credentials from the provided email
 ```
 
 Edit `frontend/.env.local` — fill in Auth0 credentials:
